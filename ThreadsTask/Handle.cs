@@ -14,7 +14,7 @@ namespace ThreadsTask
         /// <param name="message">Сообщение.</param>
         /// <param name="arguments">Аргументы запроса.</param>
         /// <returns>Результат выполнения запроса.</returns>
-        string HandleRequest(string message, string[] arguments);
+        string HandleRequest(string? message, string?[] arguments);
     }
 
 
@@ -24,7 +24,7 @@ namespace ThreadsTask
     public class DummyRequestHandler : IRequestHandler
     {
         /// <inheritdoc />
-        public string HandleRequest(string message, string[] arguments)
+        public string HandleRequest(string? message, string?[] arguments)
         {
             // Притворяемся, что делаем что то.
             Thread.Sleep(10_000);

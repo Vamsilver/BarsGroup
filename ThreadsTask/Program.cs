@@ -2,9 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-using Microsoft.VisualBasic;
 
 namespace ThreadsTask
 {
@@ -21,12 +19,12 @@ namespace ThreadsTask
             while (true)
             {
                 Console.WriteLine("Введите текст запроса для отправки. Для выхода введите /exit");
-                string request = Console.ReadLine();
+                string? request = Console.ReadLine();
                 
                 if(request is "/exit") break;
                 
                 Console.WriteLine("Будет послано сообщение '" + request + "'");
-                List<string> collection = new();
+                List<string?> collection = new();
                 Console.WriteLine("Введите аргументы сообщения. " 
                                   + "Если аргументы не нужны - введите /end");
                 while (true)
@@ -42,13 +40,14 @@ namespace ThreadsTask
                 }
 
                 string guid = Guid.NewGuid().ToString("D");
-                Thread thread = new(() =>
+
+                ThreadPool.QueueUserWorkItem(_ =>
                 {
                     try
                     {
                         string message = handler.HandleRequest(request, collection.ToArray());
-                        Console.Write("Сообщение с идентификатором " + guid + " ");
-                        Console.WriteLine("получило ответ - " + message);
+                                 Console.Write("Сообщение с идентификатором " + guid + " ");
+                                 Console.WriteLine("получило ответ - " + message);
                     }
                     catch (Exception e)
                     {
@@ -56,8 +55,7 @@ namespace ThreadsTask
                         Console.WriteLine("упало с ошибкой: " + e.Message);
                     }
                 });
-                thread.Start();
-                
+
                 Console.WriteLine("Было отправлено сообщение '" 
                                   + request + "'. Присвоен идентификатор " 
                                   + guid);
